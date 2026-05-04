@@ -314,9 +314,7 @@ end
 local function init()
     system.registerWidget({
         key = "flcnt10",
-        name = function()
-            return name() .. " - " .. model.name()
-        end,
+        name = name(),
         create = create,
         paint = paint,
         wakeup = wakeup,
