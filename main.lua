@@ -1,6 +1,6 @@
---- Aerovibes Flight Counter 1.0
+--- Aerovibes Flight Counter 1.1
 
-local translations = {en="Aerovibes Flight Counter 1.0", fr="Aerovibes Flight Counter 1.0"}
+local translations = {en="Aerovibes Flight Counter 1.1", fr="Aerovibes Flight Counter 1.1"}
 
 local function name()
   local locale = system.getLocale()
@@ -20,7 +20,7 @@ local function trim(s)
 end
 
 local function getPath(widget, suffix)
-  return "/scripts/FlightCount_1_0/Files/" .. widget.modelName .. "-" .. suffix .. ".txt"
+  return "/scripts/FlightCount/Files/" .. widget.modelName .. "-" .. suffix .. ".txt"
 end
 
 local function ensureNumberFile(path, defaultValue)
