@@ -157,6 +157,7 @@ local function resetAllData(widget)
   widget.powerCycleCounted = false
   widget.switchactive = 0
   widget.tallydelayStart = 0
+  widget.triggerOn = false
 
   writeFile(getPath(widget, "Preset"), 0)
   writeFile(getPath(widget, "Lifetime"), 0)
@@ -249,7 +250,7 @@ local function wakeup(widget)
     end
   end
 
-  if not widget.powerCycleCounted and triggerActive then
+  if not widget.powerCycleCounted and widget.switchactive == 0 and triggerActive then
     if widget.tallydelayStart == 0 then
       widget.tallydelayStart = math.floor(os.clock())
     end
