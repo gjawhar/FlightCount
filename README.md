@@ -1,5 +1,6 @@
 # Aerovibes Flight Counter 1.1 User Guide
 Inspired by vprheli’s ETHOS Lua widgets
+
 Aerovibes Flight Counter 1.1 is an Ethos widget that keeps track of how many flights have been made on a model. It shows a **Today** count for flights made on the current day and a **Lifetime** count for the full running total, including any starting count entered by the user.
 
 A flight is counted when the configured trigger switch stays active long enough to pass the selected trigger delay.
