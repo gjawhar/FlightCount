@@ -1,6 +1,6 @@
---- Aerovibes Flight Counter 1.1
+--- Aerovibes Flight Counter 1.2
 
-local translations = {en="Aerovibes Flight Counter 1.1", fr="Aerovibes Flight Counter 1.1"}
+local translations = {en="Aerovibes Flight Counter 1.2", fr="Aerovibes Flight Counter 1.2"}
 
 local function name()
   local locale = system.getLocale()
@@ -92,7 +92,7 @@ local function writeFile(path, value)
 end
 
 local function toggle(interval, c1, c2)
-  if os.clock() % (interval * 2) < interval then
+  if os.time() % (interval * 2) < interval then
     return c1
   else
     return c2
@@ -237,7 +237,9 @@ local function wakeup(widget)
   local triggerActive = widget.triggerswitch ~= nil and widget.triggerswitch:state()
 
   if triggerActive and not widget.powerCycleCounted and widget.switchactive == 0 then
-    widget.newColor = toggle(0.5, widget.color1, widget.color2)
+    -- os.time() is whole-second resolution (no os.clock() CPU-time drift),
+    -- so the shortest usable blink period is 1s on / 1s off.
+    widget.newColor = toggle(1, widget.color1, widget.color2)
     if widget.color ~= widget.newColor then
       widget.color = widget.newColor
       lcd.invalidate()
@@ -252,10 +254,10 @@ local function wakeup(widget)
 
   if not widget.powerCycleCounted and widget.switchactive == 0 and triggerActive then
     if widget.tallydelayStart == 0 then
-      widget.tallydelayStart = math.floor(os.clock())
+      widget.tallydelayStart = os.time()
     end
 
-    if math.floor(os.clock()) >= widget.tallydelayStart + widget.tallyDelay then
+    if os.time() >= widget.tallydelayStart + widget.tallyDelay then
       widget.today = widget.today + 1
       widget.lifetime = widget.lifetime + 1
       widget.switchactive = 1
@@ -325,6 +327,10 @@ local function read(widget)
   widget.border = storage.read("border")
   widget.tallyDelay = storage.read("tallyDelay")
   widget.countPerPowerCycle = storage.read("countPerPowerCycle")
+
+  if widget.tallyDelay == nil then
+    widget.tallyDelay = 0
+  end
 
   if widget.countPerPowerCycle == nil then
     widget.countPerPowerCycle = true
