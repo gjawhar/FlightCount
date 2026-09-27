@@ -1,131 +1,208 @@
-# Flight Counter
+# Flight Counter 2
 
-DLG flight tally widget for FrSky Ethos. Built and tested on a FrSky X20RS
-running Ethos 26.1.1. Inspired by vprheli's Ethos Lua widgets.
+A FrSky Ethos widget that counts your flights. You decide what a flight is:
+pick any switch, logic switch or function switch, and a flight is counted when
+it turns on and stays on for the delay you set. Built for any kind of model —
+jets, electrics, gas aerobatics, gliders.
 
-Flight Counter is an Ethos widget that keeps track of how many flights
-have been made on a model. It shows a **Today** count for flights made on
-the current day and a **Lifetime** count for the full running total,
-including any starting count entered by the user. A flight is counted
-when the configured trigger switch stays active long enough to pass the
-selected trigger delay.
+Version 2 is a rewrite of Flight Counter 1.x. Every flight is recorded as its
+own line, so the widget can show today, this month, this year, a 12-month
+history chart and a lifetime total. Counts follow a model through a rename,
+and a storage glitch can no longer zero your counts.
+
+**Pre-release.** Tested in the FrSky Suite X20RS simulator on Ethos 1.6.7 and
+26.1.2; not yet flown on a real radio. Please report anything odd (see
+[Feedback](#feedback)).
+
+## Screenshots
+
+Captured from the FrSky Suite X20RS simulator.
+
+| Full page (Ethos 1.6.7) | Full page (Ethos 26.1.2) |
+|---|---|
+| ![Full page: Today 4 in large green digits, Lifetime 254 including 250 earlier flights, September 4, since 9/26 4, a 12-month chart with "250 earlier" in the months before logging began, and a green "Flight 254 logged" pill](docs/screenshots/full-page.png) | ![Full page on Ethos 26: Today 1, Lifetime 106 including 105 earlier, and "Counted - power-cycle to count again"](docs/screenshots/full-page-ethos26.png) |
+
+| Half page and full-width strip | Settings |
+|---|---|
+| ![A half-page widget and a full-width strip on the same model, both showing Today 3 and Lifetime 253](docs/screenshots/half-and-strip.png) | ![Settings page: Same on every widget of this model, Trigger switch FS1, Trigger delay 3 s, One count per power cycle On, Flights before Flight Counter 250](docs/screenshots/settings.png) |
 
 ## What the widget shows
 
-- **Today** — the number of flights counted for the current day. Resets
-  automatically when the date changes.
-- **Lifetime** — the stored lifetime tally plus the **Starting Lifetime
-  Count** value. Keeps growing until the counter data is reset.
+- **Today** — the big green number: flights counted today.
+- **Lifetime** — every flight on this model, including any you counted
+  before installing Flight Counter 2 ("incl. 250 earlier").
+- **This month** and **this year** tiles.
+- **Flights per month** — the last 12 months as a bar chart, this month in
+  green. Months before logging began are left blank and labelled with the
+  number of earlier flights, so a new install never looks like "you didn't fly
+  for a year".
+- **Last flight** time, and a status line: the trigger in use, the delay
+  countdown, "Flight 254 logged", or "Counted - power-cycle to count again".
 
-## Trigger delay countdown
+The layout adapts to the slot:
 
-If a trigger delay greater than zero is set, the widget gives visible
-feedback while the delay is counting down: the displayed text blinks
-between orange and green until the delay completes. This is useful when
-the trigger switch may be active briefly without meaning a real flight
-has started — if the switch is released before the delay completes, the
-countdown is canceled and starts over the next time the trigger is
-activated.
+| Slot (X20RS) | Shows |
+|---|---|
+| Full page | Everything above |
+| Full width, half height | Today, Lifetime, month and year, the 12-month chart |
+| Half page | Today, Lifetime, month and year, a 12-month strip |
+| Smaller cells | Today and Lifetime (not yet checked on a radio) |
+
+The widget follows the radio's own light or dark theme.
+
+## How a flight is counted
+
+1. The trigger switch turns **on** and stays on for the **trigger delay**
+   (0 = count immediately). While it counts down, the widget shows the seconds
+   left and a filling bar. Released early, nothing is counted.
+2. The flight is logged once. The switch has to go off and on again before
+   another flight can count.
+3. With **One count per power cycle** on (the default), only one flight is
+   counted until the radio is switched off and on again.
+4. A switch that is already on when the radio powers up does **not** count
+   until it has been seen off once — so a model powered up with its arming
+   switch left on doesn't log a phantom flight.
 
 ## Settings
 
-Long-press the widget on a model screen (native Ethos "Configure" option)
-to reach these:
+Open the screen setup, tap the Flight Counter 2 widget, then its settings.
+(Ethos usually opens them by itself when you first add the widget.)
 
-- **Trigger Switch** — the switch that tells the widget when a flight may
-  be starting. Any physical or logical switch supported by Ethos can be
-  used. Pick one that happens once per flight and is unlikely to be
-  toggled accidentally (an arming switch, gear switch, or similar).
-- **Trigger Delay** — how long the trigger switch must remain active
-  before a flight is counted, in seconds. `0` counts immediately when the
-  trigger becomes active.
-- **One count per power cycle** — **On**: the widget counts only one
-  flight until the radio is power-cycled. **Off**: the widget can count
-  another flight in the same session, but only after the trigger switch
-  has been released and activated again — it never double-counts a single
-  continuous activation either way.
-- **Starting Lifetime Count** — use this if the model already had flights
-  before the widget was installed; it's added to the counted lifetime
-  total. Example: 23 prior flights + 5 counted since = a displayed
-  lifetime of 28.
-- **Reset all data on reboot** — a one-time reset. Turn it on, reboot the
-  radio once, and the widget clears the saved `Today`, `Lifetime`, and
-  `Starting Lifetime Count` data, then automatically clears the reset
-  request so later reboots don't keep resetting the counter.
-- **Border** — toggles a border around the widget display. Appearance
-  only, doesn't affect counting.
+All settings belong to the **model**: every Flight Counter 2 widget on the
+same model — say a small tile on one page and the chart on another — shows
+the same numbers and uses the same settings. One flight is only ever counted
+once.
+
+- **Trigger switch** — any switch, switch position, logic switch or function
+  switch.
+- **Trigger delay** — seconds the switch must stay on.
+- **One count per power cycle** — On/Off, see above.
+- **Flights before Flight Counter** — flights this model made before you
+  installed Flight Counter 2. Added to Lifetime, never shown on the chart.
+  Changing it later only changes Lifetime.
+- **Border** — a frame around the widget.
+- **Undo last flight** — removes an accidental count. Pick the flight it
+  names ("Undo flight 263 (9/26/26 9:43 PM)").
+- **Erase this model's flights** — starts the model over at zero.
+
+Undo and Erase happen when you leave the settings page, so each takes two
+deliberate steps. Neither deletes anything from the log: both are recorded as
+correction lines, so an accidental erase can still be recovered by hand.
+
+## Renames and clones
+
+- **Rename a model** — its counts stay with it. (Ethos renames the model's
+  file along with the name; Flight Counter 2 notices and follows it.)
+- **Clone a model for a new airplane** — the clone starts at zero, even on
+  Ethos 1.6 where the clone keeps the original's receiver ID.
+- **Switch models** without a power cycle — the widget swaps to that model's
+  counts.
+
+## Your data
+
+Flight Counter 2 keeps its data in its **own folder**, next to the script:
+
+```
+scripts/
+├── FlightCount2/       the widget (replaced when you install an update)
+└── FlightCountData/    your flights (created by the widget, never shipped)
+    ├── models.csv      one line per model: key, model file, receiver ID, name
+    ├── M1.csv          that model's flights, one line each
+    └── diag.csv        a short trouble log
+```
+
+- Updating the widget can't touch your flights: the install package doesn't
+  contain a `FlightCountData` folder at all.
+- Flights are only ever **appended**. Nothing is rewritten, so a glitch can at
+  most lose the one line being written, never your history.
+- If the log can't be read at power-up (a storage hiccup), the widget shows
+  dashes and keeps retrying — it never shows or saves zeros over your counts.
+  New flights are still saved while it retries.
+- Each line is plain text (`time,date,kind,count,note`), readable in any
+  spreadsheet.
+
+## Upgrading from Flight Counter 1.x
+
+Flight Counter 2 is a **separate install**: a new folder and a new widget. It
+never changes the old one.
+
+1. Install Flight Counter 2 (below) and **leave Flight Counter 1.x installed**
+   for now.
+2. On each model, add the **Flight Counter 2** widget. The first time a model
+   loads, it reads that model's 1.x counts (read-only) and fills in
+   **Flights before Flight Counter** with them. A blue note says
+   "Pre-filled 250 from v1 - check in Settings".
+3. **Set the trigger switch.** Ethos keeps each widget's settings to itself,
+   so the new widget can't read the old one's — pick the same switch, delay
+   and one-per-cycle choice again.
+4. Check the pre-filled number in Settings and correct it if needed. (If 1.x
+   was already showing zeros — the storage bug that prompted this rewrite —
+   there is nothing to pre-fill; type your count in.)
+5. When every model has been done, **remove the old widget from its screens
+   first**, then delete `scripts/FlightCount/`. Deleting the folder while the
+   old widget is still on a screen leaves Ethos showing a "widget not found"
+   error.
+
+The pre-fill needs the model's name to be the same as when 1.x last counted,
+because 1.x filed its counts by model name. All 1.x flights become "earlier"
+flights: Today starts at 0 and the chart starts on the day you install.
 
 ## Installation
 
 ### Install with Ethos Suite
 
-**Known limitation:** whether Ethos Suite's installer merges into an
-existing `Files/` folder or replaces it wholesale on reinstall/upgrade is
-untested. If you're updating an existing install with real flight counts,
-back up your `scripts/FlightCount/Files/` folder first — if the counts
-reset after updating, restore your `.txt` files from that backup.
+1. Download `FlightCount2-v2.0.0.zip` from the
+   [Releases page](https://github.com/gjawhar/FlightCount/releases).
+2. In Ethos Suite, open the **Lua Library** tab, choose **Install lua
+   script**, and select the ZIP.
+3. On the radio, add **Flight Counter 2** to a model screen and set the
+   trigger switch.
 
-1. Download the release ZIP (see the
-   [Releases page](https://github.com/gjawhar/FlightCount/releases)) —
-   it's already shaped the way Ethos Suite expects, no repacking needed.
-2. In Ethos Suite, open the **Lua Library** tab.
-3. Choose **Install lua script** and select the ZIP file.
-4. Let Ethos Suite copy the script to the radio storage, then assign the
-   widget to a model screen (it will appear as "Flight Counter" in the
-   widget picker) and open its Settings to set the Trigger Switch and any
-   other options.
-
-ZIP structure for Ethos Suite:
+ZIP structure:
 
 ```
 scripts/
-└── FlightCount/
+└── FlightCount2/
     ├── main.lua
-    └── Files/
+    ├── core.lua
+    ├── draw.lua
+    ├── screen.lua
+    └── config.lua
 ```
 
-`Files/` must exist (even empty) because the widget stores model-specific
-text files there automatically as it runs.
+### Install by copying files
 
-### Install manually via the SD card or internal storage
+Ethos radios keep scripts on the SD card or in internal storage — use
+whichever your radio uses.
 
-Ethos radios can store scripts either on a removable SD card or in the
-transmitter's internal storage — use whichever your radio is set up with.
+1. Connect the radio to your computer.
+2. Copy the `FlightCount2` folder into `scripts/`, so the path is
+   `scripts/FlightCount2/main.lua`.
+3. Eject, restart the radio, and add the widget to a model screen.
 
-1. Connect the radio to your computer and open its storage (SD card or
-   internal storage, depending on your setup) in your file manager.
-2. Copy the `FlightCount` folder into the `scripts` folder there so the
-   final script path is `scripts/FlightCount/main.lua`.
-3. Safely disconnect/eject and start (or reboot) the radio.
-4. Open the model where the widget will be used, go to screen
-   configuration, choose a widget location, and select "Flight Counter".
-5. Open the widget configuration page and set the Trigger Switch and any
-   other options.
+## Requirements
 
-## Upgrading from older versions
-
-If an older installation used the folder `FlightCount_1_0`, saved counter
-files from that older folder won't automatically be read after moving to
-`FlightCount`, because the save path has changed. To keep old data, move
-the model text files from `scripts/FlightCount_1_0/Files/` to
-`scripts/FlightCount/Files/` before running the new version.
-
-## Tips
-
-- Use a trigger that happens once per real flight, not a switch that's
-  toggled often on the ground.
-- Use a small trigger delay if brief accidental switch activation is
-  possible.
-- Use **Starting Lifetime Count** only to account for older flights that
-  happened before the widget was installed.
-- Use **Reset all data on reboot** only when a full reset is desired —
-  it's not needed for normal operation.
+- FrSky Ethos 1.6 or 26. Tested on the X20RS simulator; other color-screen
+  radios should work, but slot layouts were measured on the X20RS.
 
 ## Feedback
 
-Found a bug, or something that doesn't behave the way you'd expect?
-Please open an issue on GitHub rather than emailing me directly — that
-way bugs, discussion, and fixes all stay tracked in one place other pilots
-can also see:
+Found a bug, or something that doesn't behave the way you'd expect? Please
+open an issue on GitHub rather than emailing me directly, so bugs and fixes
+stay in one place other pilots can see:
 
 **https://github.com/gjawhar/FlightCount/issues**
+
+If a count looks wrong, `scripts/FlightCountData/diag.csv` and the model's
+`M*.csv` file show exactly what happened — attach them to the issue.
+
+## Development
+
+- `python3 harness/run.py` — runs the core against a fake file system with
+  injected storage glitches, renames, clones and model switches (needs
+  `pip3 install lupa`).
+- `python3 harness/render.py` — renders every layout and state from the real
+  drawing code to `harness/out/` (approximate fonts; checks composition).
+- `mockup/` — the approved design.
+- `probe/` — the small test widgets used to measure Ethos behavior (font
+  sizes, slot sizes, model files) in the simulator.

@@ -1,0 +1,461 @@
+<meta charset="utf-8">
+<title>Flight Counter 2.0 mockup</title>
+<style>
+  :root { --ink:#1d2330; --muted:#5c6577; --line:#d9dde5; --paper:#f6f7f9; }
+  body { background: var(--paper); color: var(--ink); font: 15px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 24px 80px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2 { font-size: 19px; margin: 44px 0 6px; padding-top: 18px; border-top: 1px solid var(--line); }
+  h3 { font-size: 15px; margin: 18px 0 6px; }
+  p.lead { color: var(--muted); margin: 0 0 8px; max-width: 760px; }
+  .note { color: var(--muted); font-size: 13px; margin: 6px 0 0; max-width: 780px; }
+  .row { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; margin-top: 12px; }
+  .cap { font-size: 12px; color: var(--muted); margin-top: 6px; max-width: 390px; }
+  .cap b { color: var(--ink); }
+
+  /* ---- radio frames (1 css px = 1 radio px, X20RS 800x480) ---- */
+  .w { position: relative; overflow: hidden; border-radius: 4px; font-family: "Roboto", "Helvetica Neue", Arial, sans-serif; }
+  .night { background: #1b1f26; color: #f2f4f8; --sub:#8f98a8; --tile:#252b35; --bar:#3a4556; --acc:#3ccf6e; --warn:#f0a02c; --bad:#ff5d5d; --grid:#2c3340; }
+  .day   { background: #ffffff; color: #141820; --sub:#6b7383; --tile:#eef1f5; --bar:#c3cad6; --acc:#1f9d4f; --warn:#d9820b; --bad:#d63a3a; --grid:#e3e7ee; box-shadow: 0 0 0 1px #d4d9e1 inset; }
+  .sub { color: var(--sub); }
+  .lbl { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); }
+  .hero { font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+  .tile { background: var(--tile); border-radius: 8px; }
+  .pill { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 13px; font-weight: 600; }
+
+  table.q { border-collapse: collapse; width: 100%; max-width: 980px; margin-top: 8px; font-size: 14px; }
+  table.q td, table.q th { border-top: 1px solid var(--line); padding: 8px 10px; vertical-align: top; text-align: left; }
+  table.q th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  table.q td:first-child { white-space: nowrap; font-weight: 600; }
+  .ask { background: #fff4d6; border: 1px solid #f0d27a; border-radius: 8px; padding: 12px 16px; margin: 12px 0; max-width: 940px; }
+  .ask b { display: block; margin-bottom: 2px; }
+  code { background: #eceff4; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1d2330; color: #e8ecf2; padding: 12px 14px; border-radius: 8px; font-size: 13px; overflow-x: auto; max-width: 940px; }
+
+  /* settings form mock */
+  .form { width: 784px; background:#1b1f26; color:#f2f4f8; border-radius: 4px; font-family: Arial, sans-serif; font-size: 18px; }
+  .form .hdr { background:#262c36; padding: 10px 16px; font-weight: 700; }
+  .form .ln { display:flex; justify-content: space-between; padding: 11px 16px; border-top: 1px solid #2c3340; }
+  .form .sec { padding: 12px 16px 4px; font-size: 13px; letter-spacing:.08em; color:#8f98a8; text-transform: uppercase; }
+  .form .val { background:#2c3440; border-radius: 6px; padding: 1px 12px; min-width: 90px; text-align:center; }
+  .form .btn { background:#34506b; border-radius: 6px; padding: 1px 14px; }
+  .form .new { color:#3ccf6e; font-size: 12px; margin-left: 8px; font-weight: 700; }
+</style>
+
+<main>
+<h1>Flight Counter 2.0 — mockup, draft 1c</h1>
+<p class="lead">Same idea as today: you decide what counts as a flight with a switch or logic switch. New: every flight is its own record, counts follow the model through a rename, storage glitches can no longer zero your counts, and the widget shows history. Drawn at X20RS pixel size (800×480 screen). Widget slot sizes are my best estimates until I measure them on the radio.</p>
+
+<!-- ============================================================ LARGE -->
+<h2>1. Large widget (full page) — monthly history</h2>
+<p class="lead">Lifetime is the hero number. The tiles give today / this month / this year. The chart shows the last 12 months, with the current month in the accent colour.</p>
+
+<div class="row">
+  <div>
+    <div class="w night" style="width:784px;height:380px">
+      <!-- header -->
+      <div style="position:absolute;left:22px;top:14px;font-size:22px;font-weight:700">Extra 330SC</div>
+      <div class="sub" style="position:absolute;right:22px;top:17px;font-size:16px">Last flight today 2:14 PM</div>
+      <!-- hero -->
+      <div class="lbl" style="position:absolute;left:22px;top:66px">Lifetime flights</div>
+      <div class="hero" style="position:absolute;left:18px;top:88px;font-size:104px">412</div>
+      <!-- tiles -->
+      <div class="tile" style="position:absolute;left:22px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px">Today</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px;color:var(--acc)">3</div>
+      </div>
+      <div class="tile" style="position:absolute;left:116px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px">Sep</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">12</div>
+      </div>
+      <div class="tile" style="position:absolute;left:210px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px">2026</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">137</div>
+      </div>
+      <!-- status strip -->
+      <div class="sub" style="position:absolute;left:22px;top:322px;font-size:15px;line-height:1.35">Trigger SF↓ · 5 s delay<br>Counted this power-up ✓</div>
+
+      <!-- chart -->
+      <svg style="position:absolute;left:310px;top:62px" width="462" height="300" viewBox="0 0 462 300">
+        <text x="4" y="14" font-size="13" fill="#8f98a8" letter-spacing="1">FLIGHTS PER MONTH</text>
+        <line x1="0" y1="250" x2="460" y2="250" stroke="#2c3340" stroke-width="2"/>
+        <line x1="0" y1="150" x2="460" y2="150" stroke="#2c3340" stroke-dasharray="3 5"/>
+        <text x="4" y="145" font-size="12" fill="#8f98a8">avg 12</text>
+        <g font-size="14" text-anchor="middle" fill="#f2f4f8" font-weight="700">
+          <rect x="8"   y="218" width="26" height="32"  rx="3" fill="#3a4556"/><text x="21"  y="211">4</text>
+          <rect x="46"  y="234" width="26" height="16"  rx="3" fill="#3a4556"/><text x="59"  y="227">2</text>
+          <rect x="84"  y="248" width="26" height="2"   fill="#3a4556"/>
+          <rect x="122" y="242" width="26" height="8"   rx="3" fill="#3a4556"/><text x="135" y="235">1</text>
+          <rect x="160" y="202" width="26" height="48"  rx="3" fill="#3a4556"/><text x="173" y="195">6</text>
+          <rect x="198" y="162" width="26" height="88"  rx="3" fill="#3a4556"/><text x="211" y="155">11</text>
+          <rect x="236" y="106" width="26" height="144" rx="3" fill="#3a4556"/><text x="249" y="99">18</text>
+          <rect x="274" y="74"  width="26" height="176" rx="3" fill="#3a4556"/><text x="287" y="67">22</text>
+          <rect x="312" y="50"  width="26" height="200" rx="3" fill="#3a4556"/><text x="325" y="43">25</text>
+          <rect x="350" y="98"  width="26" height="152" rx="3" fill="#3a4556"/><text x="363" y="91">19</text>
+          <rect x="388" y="66"  width="26" height="184" rx="3" fill="#3a4556"/><text x="401" y="59">23</text>
+          <rect x="426" y="154" width="26" height="96"  rx="3" fill="#3ccf6e"/><text x="439" y="147" fill="#3ccf6e">12</text>
+        </g>
+        <g font-size="13" text-anchor="middle" fill="#8f98a8">
+          <text x="21" y="270">O</text><text x="59" y="270">N</text><text x="97" y="270">D</text><text x="135" y="270">J</text>
+          <text x="173" y="270">F</text><text x="211" y="270">M</text><text x="249" y="270">A</text><text x="287" y="270">M</text>
+          <text x="325" y="270">J</text><text x="363" y="270">J</text><text x="401" y="270">A</text><text x="439" y="270" fill="#3ccf6e">S</text>
+        </g>
+        <text x="4" y="292" font-size="12" fill="#8f98a8">Oct 2025</text>
+        <text x="458" y="292" font-size="12" fill="#8f98a8" text-anchor="end">Sep 2026</text>
+      </svg>
+    </div>
+    <div class="cap"><b>Night (Ethos dark theme).</b> Month bars carry their value; empty months keep a thin stub so gaps read as "didn't fly", not "missing data". Dashed line = monthly average over the months shown.</div>
+  </div>
+
+  <div>
+    <div class="w day" style="width:784px;height:380px">
+      <div style="position:absolute;left:22px;top:14px;font-size:22px;font-weight:700">Extra 330SC</div>
+      <div class="sub" style="position:absolute;right:22px;top:17px;font-size:16px">Last flight today 2:14 PM</div>
+      <div class="lbl" style="position:absolute;left:22px;top:66px">Lifetime flights</div>
+      <div class="hero" style="position:absolute;left:18px;top:88px;font-size:104px">412</div>
+      <div class="tile" style="position:absolute;left:22px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px">Today</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px;color:var(--acc)">3</div>
+      </div>
+      <div class="tile" style="position:absolute;left:116px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px">Sep</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">12</div>
+      </div>
+      <div class="tile" style="position:absolute;left:210px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px">2026</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">137</div>
+      </div>
+      <div style="position:absolute;left:22px;top:318px;width:272px">
+        <div style="font-size:15px;font-weight:700;color:var(--warn)">Counting… 3 s</div>
+        <div style="margin-top:6px;height:8px;border-radius:4px;background:var(--tile)"><div style="width:40%;height:8px;border-radius:4px;background:var(--warn)"></div></div>
+      </div>
+      <svg style="position:absolute;left:310px;top:62px" width="462" height="300" viewBox="0 0 462 300">
+        <text x="4" y="14" font-size="13" fill="#6b7383" letter-spacing="1">FLIGHTS PER MONTH</text>
+        <line x1="0" y1="250" x2="460" y2="250" stroke="#e3e7ee" stroke-width="2"/>
+        <line x1="0" y1="150" x2="460" y2="150" stroke="#e3e7ee" stroke-dasharray="3 5"/>
+        <text x="4" y="145" font-size="12" fill="#6b7383">avg 12</text>
+        <g font-size="14" text-anchor="middle" fill="#141820" font-weight="700">
+          <rect x="8"   y="218" width="26" height="32"  rx="3" fill="#c3cad6"/><text x="21"  y="211">4</text>
+          <rect x="46"  y="234" width="26" height="16"  rx="3" fill="#c3cad6"/><text x="59"  y="227">2</text>
+          <rect x="84"  y="248" width="26" height="2"   fill="#c3cad6"/>
+          <rect x="122" y="242" width="26" height="8"   rx="3" fill="#c3cad6"/><text x="135" y="235">1</text>
+          <rect x="160" y="202" width="26" height="48"  rx="3" fill="#c3cad6"/><text x="173" y="195">6</text>
+          <rect x="198" y="162" width="26" height="88"  rx="3" fill="#c3cad6"/><text x="211" y="155">11</text>
+          <rect x="236" y="106" width="26" height="144" rx="3" fill="#c3cad6"/><text x="249" y="99">18</text>
+          <rect x="274" y="74"  width="26" height="176" rx="3" fill="#c3cad6"/><text x="287" y="67">22</text>
+          <rect x="312" y="50"  width="26" height="200" rx="3" fill="#c3cad6"/><text x="325" y="43">25</text>
+          <rect x="350" y="98"  width="26" height="152" rx="3" fill="#c3cad6"/><text x="363" y="91">19</text>
+          <rect x="388" y="66"  width="26" height="184" rx="3" fill="#c3cad6"/><text x="401" y="59">23</text>
+          <rect x="426" y="154" width="26" height="96"  rx="3" fill="#1f9d4f"/><text x="439" y="147" fill="#1f9d4f">12</text>
+        </g>
+        <g font-size="13" text-anchor="middle" fill="#6b7383">
+          <text x="21" y="270">O</text><text x="59" y="270">N</text><text x="97" y="270">D</text><text x="135" y="270">J</text>
+          <text x="173" y="270">F</text><text x="211" y="270">M</text><text x="249" y="270">A</text><text x="287" y="270">M</text>
+          <text x="325" y="270">J</text><text x="363" y="270">J</text><text x="401" y="270">A</text><text x="439" y="270" fill="#1f9d4f">S</text>
+        </g>
+        <text x="4" y="292" font-size="12" fill="#6b7383">Oct 2025</text>
+        <text x="458" y="292" font-size="12" fill="#6b7383" text-anchor="end">Sep 2026</text>
+      </svg>
+    </div>
+    <div class="cap"><b>Day (Ethos light theme), trigger delay running.</b> The v1 orange/green blinking text is replaced by a filling bar and a countdown. The widget follows the radio's own light/dark theme; no separate setting.</div>
+  </div>
+</div>
+
+<!-- ============================================================ MEDIUM -->
+<h2>2. Medium widget (half page) — and every state</h2>
+<p class="lead">Lifetime plus today and this month, with a mini 12-month bar strip. The same state messages appear, shortened, on the smaller sizes.</p>
+
+<div class="row">
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px">412</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:200px;top:36px;font-size:15px" class="sub">Today</div>
+      <div class="hero" style="position:absolute;left:200px;top:56px;font-size:36px;color:var(--acc)">3</div>
+      <div style="position:absolute;left:290px;top:36px;font-size:15px" class="sub">Sep</div>
+      <div class="hero" style="position:absolute;left:290px;top:56px;font-size:36px">12</div>
+      <svg style="position:absolute;left:16px;top:132px" width="356" height="46" viewBox="0 0 356 46">
+        <g fill="#3a4556">
+          <rect x="0" y="36" width="22" height="8" rx="2"/><rect x="30" y="40" width="22" height="4" rx="2"/><rect x="60" y="43" width="22" height="1"/>
+          <rect x="90" y="42" width="22" height="2" rx="1"/><rect x="120" y="33" width="22" height="11" rx="2"/><rect x="150" y="24" width="22" height="20" rx="2"/>
+          <rect x="180" y="12" width="22" height="32" rx="2"/><rect x="210" y="5" width="22" height="39" rx="2"/><rect x="240" y="0" width="22" height="44" rx="2"/>
+          <rect x="270" y="11" width="22" height="33" rx="2"/><rect x="300" y="3" width="22" height="41" rx="2"/>
+        </g>
+        <rect x="330" y="23" width="22" height="21" rx="2" fill="#3ccf6e"/>
+      </svg>
+    </div>
+    <div class="cap"><b>Idle.</b> Bar strip = last 12 months, no numbers (too small); current month in accent.</div>
+  </div>
+
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px">412</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:200px;top:36px;font-size:15px" class="sub">Today</div>
+      <div class="hero" style="position:absolute;left:200px;top:56px;font-size:36px;color:var(--acc)">3</div>
+      <div style="position:absolute;left:290px;top:36px;font-size:15px" class="sub">Sep</div>
+      <div class="hero" style="position:absolute;left:290px;top:56px;font-size:36px">12</div>
+      <div style="position:absolute;left:16px;top:138px;width:356px">
+        <div style="font-size:16px;font-weight:700;color:var(--warn)">Counting… 3 s</div>
+        <div style="margin-top:6px;height:10px;border-radius:5px;background:var(--tile)"><div style="width:40%;height:10px;border-radius:5px;background:var(--warn)"></div></div>
+      </div>
+    </div>
+    <div class="cap"><b>Trigger delay running.</b> Bar fills over the delay. Switch released early → bar disappears, nothing logged (same as v1).</div>
+  </div>
+
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px;color:var(--acc)">413</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:200px;top:36px;font-size:15px" class="sub">Today</div>
+      <div class="hero" style="position:absolute;left:200px;top:56px;font-size:36px;color:var(--acc)">4</div>
+      <div style="position:absolute;left:290px;top:36px;font-size:15px" class="sub">Sep</div>
+      <div class="hero" style="position:absolute;left:290px;top:56px;font-size:36px">13</div>
+      <div style="position:absolute;left:16px;top:142px"><span class="pill" style="background:var(--acc);color:#0d1a12;font-size:16px;padding:5px 14px">✓ Flight 413 logged</span></div>
+    </div>
+    <div class="cap"><b>Just logged</b> (about 5 s, then back to idle). Numbers that changed flash in the accent colour.</div>
+  </div>
+
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px">413</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:200px;top:36px;font-size:15px" class="sub">Today</div>
+      <div class="hero" style="position:absolute;left:200px;top:56px;font-size:36px;color:var(--acc)">4</div>
+      <div style="position:absolute;left:290px;top:36px;font-size:15px" class="sub">Sep</div>
+      <div class="hero" style="position:absolute;left:290px;top:56px;font-size:36px">13</div>
+      <div class="sub" style="position:absolute;left:16px;top:146px;font-size:15px">✓ Counted · power-cycle to count again</div>
+    </div>
+    <div class="cap"><b>Already counted</b> (only with "one count per power cycle" on). v1 gave no hint that the switch was being ignored.</div>
+  </div>
+
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px">0</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:16px;top:138px;font-size:16px;font-weight:700;color:var(--warn)">No trigger switch set</div>
+      <div class="sub" style="position:absolute;left:16px;top:160px;font-size:14px">Long-press → Configure to choose one</div>
+    </div>
+    <div class="cap"><b>Not set up.</b> A fresh widget tells you what to do instead of silently never counting.</div>
+  </div>
+
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px;color:var(--sub)">– –</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:16px;top:136px;font-size:16px;font-weight:700;color:var(--bad)">Can't read the flight log</div>
+      <div class="sub" style="position:absolute;left:16px;top:158px;font-size:14px">Retrying… new flights are still saved</div>
+    </div>
+    <div class="cap"><b>Storage problem.</b> This is the case that zeroed counts in v1. Now: show dashes, never zeros; keep retrying every second; a new flight is still appended to the log, which can't damage what's already there.</div>
+  </div>
+
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px">250</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime</div>
+      <div style="position:absolute;left:200px;top:36px;font-size:15px" class="sub">Today</div>
+      <div class="hero" style="position:absolute;left:200px;top:56px;font-size:36px;color:var(--acc)">2</div>
+      <div style="position:absolute;left:290px;top:36px;font-size:15px" class="sub">Sep</div>
+      <div class="hero" style="position:absolute;left:290px;top:56px;font-size:36px">2</div>
+      <div style="position:absolute;left:16px;top:142px"><span class="pill" style="background:#34506b;color:#e8f1ff;font-size:15px;padding:5px 14px">Imported 250 flights from v1</span></div>
+    </div>
+    <div class="cap"><b>First boot after upgrading from v1.x</b> (one time only). v1 kept only totals, so the 248 older flights become this model's <b>Flights before Flight Counter</b> (you'll see 248 in Settings and can correct it). From then on it looks exactly like section 2b. Today's 2 are dated today.</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ KNOWN COUNT -->
+<h2>2b. Starting from a count you already know (no v1)</h2>
+<p class="lead">A pilot installs Flight Counter fresh and enters <b>Flights before Flight Counter = 150</b>. Those 150 have no dates, so three rules apply: they're in Lifetime, they're never on the chart, and anything covering a period before logging began says so.</p>
+<div class="row">
+  <div>
+    <div class="w night" style="width:784px;height:380px">
+      <div style="position:absolute;left:22px;top:14px;font-size:22px;font-weight:700">Extra 330SC</div>
+      <div class="sub" style="position:absolute;right:22px;top:17px;font-size:16px">No flights logged yet</div>
+      <div class="lbl" style="position:absolute;left:22px;top:66px">Lifetime flights</div>
+      <div class="hero" style="position:absolute;left:18px;top:88px;font-size:104px">150</div>
+      <div class="sub" style="position:absolute;left:22px;top:190px;font-size:14px">150 before Flight Counter</div>
+      <div class="tile" style="position:absolute;left:22px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px;white-space:nowrap">Today</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px;color:var(--acc)">0</div></div><div class="tile" style="position:absolute;left:116px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px;white-space:nowrap">Sep</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">0</div></div><div class="tile" style="position:absolute;left:210px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px;white-space:nowrap;letter-spacing:.02em">Since 9/26</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">0</div></div>
+      <div class="sub" style="position:absolute;left:22px;top:322px;font-size:15px;line-height:1.35">Trigger SF↓ · 5 s delay</div>
+      <svg style="position:absolute;left:310px;top:62px" width="462" height="300" viewBox="0 0 462 300">
+        <text x="4" y="14" font-size="13" fill="#8f98a8" letter-spacing="1">FLIGHTS PER MONTH</text>
+        <line x1="0" y1="250" x2="460" y2="250" stroke="#2c3340" stroke-width="2"/>
+        <line x1="417" y1="26" x2="417" y2="252" stroke="#8f98a8" stroke-dasharray="4 4"/>
+        <text x="411" y="40" font-size="12" fill="#8f98a8" text-anchor="end">logging started 9/26/26</text>
+        <g font-size="14" text-anchor="middle" fill="#f2f4f8" font-weight="700"><rect x="426" y="248" width="26" height="2" rx="0" fill="#3ccf6e"/></g>
+        <g font-size="13" text-anchor="middle"><text x="21" y="270" fill="#4f5868">O</text><text x="59" y="270" fill="#4f5868">N</text><text x="97" y="270" fill="#4f5868">D</text><text x="135" y="270" fill="#4f5868">J</text><text x="173" y="270" fill="#4f5868">F</text><text x="211" y="270" fill="#4f5868">M</text><text x="249" y="270" fill="#4f5868">A</text><text x="287" y="270" fill="#4f5868">M</text><text x="325" y="270" fill="#4f5868">J</text><text x="363" y="270" fill="#4f5868">J</text><text x="401" y="270" fill="#4f5868">A</text><text x="439" y="270" fill="#3ccf6e">S</text></g>
+        <text x="4" y="292" font-size="12" fill="#8f98a8">Oct 2025</text>
+        <text x="458" y="292" font-size="12" fill="#8f98a8" text-anchor="end">Sep 2026</text>
+      </svg>
+    </div>
+    <div class="cap" style="max-width:784px"><b>Install day.</b> Lifetime = the number you entered. The year tile reads <b>Since 9/26</b> instead of <b>2026</b>, so it doesn't claim you've flown 0 this year. Months before logging began are blank with dimmed letters, not zero stubs: they mean "not tracked", not "didn't fly".</div>
+  </div>
+  <div>
+    <div class="w night" style="width:784px;height:380px">
+      <div style="position:absolute;left:22px;top:14px;font-size:22px;font-weight:700">Extra 330SC</div>
+      <div class="sub" style="position:absolute;right:22px;top:17px;font-size:16px">Last flight today 11:05 AM</div>
+      <div class="lbl" style="position:absolute;left:22px;top:66px">Lifetime flights</div>
+      <div class="hero" style="position:absolute;left:18px;top:88px;font-size:104px">183</div>
+      <div class="sub" style="position:absolute;left:22px;top:190px;font-size:14px">150 before Flight Counter + 33 logged</div>
+      <div class="tile" style="position:absolute;left:22px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px;white-space:nowrap">Today</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px;color:var(--acc)">2</div></div><div class="tile" style="position:absolute;left:116px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px;white-space:nowrap">Jan</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">2</div></div><div class="tile" style="position:absolute;left:210px;top:214px;width:84px;height:84px">
+        <div class="lbl" style="position:absolute;left:10px;top:8px;white-space:nowrap">2027</div>
+        <div class="hero" style="position:absolute;left:10px;top:34px;font-size:40px">2</div></div>
+      <div class="sub" style="position:absolute;left:22px;top:322px;font-size:15px;line-height:1.35">Trigger SF↓ · 5 s delay</div>
+      <svg style="position:absolute;left:310px;top:62px" width="462" height="300" viewBox="0 0 462 300">
+        <text x="4" y="14" font-size="13" fill="#8f98a8" letter-spacing="1">FLIGHTS PER MONTH</text>
+        <line x1="0" y1="250" x2="460" y2="250" stroke="#2c3340" stroke-width="2"/>
+        <line x1="265" y1="26" x2="265" y2="252" stroke="#8f98a8" stroke-dasharray="4 4"/>
+        <text x="259" y="40" font-size="12" fill="#8f98a8" text-anchor="end">logging started 9/26</text>
+        <g font-size="14" text-anchor="middle" fill="#f2f4f8" font-weight="700"><rect x="274" y="179" width="26" height="71" rx="3" fill="#3a4556"/><text x="287" y="172">5</text><rect x="312" y="50" width="26" height="200" rx="3" fill="#3a4556"/><text x="325" y="43">14</text><rect x="350" y="121" width="26" height="129" rx="3" fill="#3a4556"/><text x="363" y="114">9</text><rect x="388" y="207" width="26" height="43" rx="3" fill="#3a4556"/><text x="401" y="200">3</text><rect x="426" y="221" width="26" height="29" rx="3" fill="#3ccf6e"/><text x="439" y="214" fill="#3ccf6e">2</text></g>
+        <g font-size="13" text-anchor="middle"><text x="21" y="270" fill="#4f5868">F</text><text x="59" y="270" fill="#4f5868">M</text><text x="97" y="270" fill="#4f5868">A</text><text x="135" y="270" fill="#4f5868">M</text><text x="173" y="270" fill="#4f5868">J</text><text x="211" y="270" fill="#4f5868">J</text><text x="249" y="270" fill="#4f5868">A</text><text x="287" y="270" fill="#8f98a8">S</text><text x="325" y="270" fill="#8f98a8">O</text><text x="363" y="270" fill="#8f98a8">N</text><text x="401" y="270" fill="#8f98a8">D</text><text x="439" y="270" fill="#3ccf6e">J</text></g>
+        <text x="4" y="292" font-size="12" fill="#8f98a8">Feb 2026</text>
+        <text x="458" y="292" font-size="12" fill="#8f98a8" text-anchor="end">Jan 2027</text>
+      </svg>
+    </div>
+    <div class="cap" style="max-width:784px"><b>Four months later (January 2027).</b> The dashed line marks where logging began; after 12 months it scrolls off and the chart looks like section 1. In a year that started before logging, the year tile says <b>Since 9/26</b>; from the first full year on it's plain <b>2027</b>. The "before" line stays under Lifetime so the total always explains itself.</div>
+  </div>
+  <div>
+    <div class="w night" style="width:388px;height:190px">
+      <div class="sub" style="position:absolute;left:16px;top:10px;font-size:15px;font-weight:600">Extra 330SC</div>
+      <div class="hero" style="position:absolute;left:14px;top:34px;font-size:68px">183</div>
+      <div class="lbl" style="position:absolute;left:16px;top:106px">Lifetime · 150 earlier</div>
+      <div style="position:absolute;left:200px;top:36px;font-size:15px" class="sub">Today</div>
+      <div class="hero" style="position:absolute;left:200px;top:56px;font-size:36px;color:var(--acc)">2</div>
+      <div style="position:absolute;left:290px;top:36px;font-size:15px" class="sub">Jan</div>
+      <div class="hero" style="position:absolute;left:290px;top:56px;font-size:36px">2</div>
+      <svg style="position:absolute;left:16px;top:132px" width="356" height="46" viewBox="0 0 356 46">
+        <line x1="205" y1="0" x2="205" y2="46" stroke="#8f98a8" stroke-dasharray="3 3"/>
+        <g fill="#3a4556"><rect x="210" y="28" width="22" height="16" rx="2"/><rect x="240" y="0" width="22" height="44" rx="2"/><rect x="270" y="16" width="22" height="28" rx="2"/><rect x="300" y="35" width="22" height="9" rx="2"/></g>
+        <rect x="330" y="38" width="22" height="6" rx="2" fill="#3ccf6e"/>
+      </svg>
+    </div>
+    <div class="cap"><b>Medium, same pilot.</b> "150 earlier" rides on the Lifetime label; the strip is blank before the dashed start line.</div>
+  </div>
+  <div>
+    <div class="w night" style="width:256px;height:95px">
+      <div class="hero" style="position:absolute;left:12px;top:12px;font-size:48px">183</div>
+      <div class="lbl" style="position:absolute;left:14px;top:66px;font-size:12px">Lifetime</div>
+      <div style="position:absolute;left:150px;top:12px;width:1px;height:70px;background:#2c3340"></div>
+      <div class="hero" style="position:absolute;left:166px;top:12px;font-size:48px;color:var(--acc)">2</div>
+      <div class="lbl" style="position:absolute;left:168px;top:66px;font-size:12px">Today</div>
+    </div>
+    <div class="cap"><b>Small, same pilot.</b> No room to explain; Lifetime simply includes the 150.</div>
+  </div>
+</div>
+
+<!-- ============================================================ SMALL -->
+<h2>3. Small and tiny widgets</h2>
+<p class="lead">No chart; just the two numbers, laid out to read at a glance. The countdown becomes a thin bar along the bottom edge.</p>
+<div class="row">
+  <div>
+    <div class="w night" style="width:256px;height:95px">
+      <div class="hero" style="position:absolute;left:12px;top:12px;font-size:48px">412</div>
+      <div class="lbl" style="position:absolute;left:14px;top:66px;font-size:12px">Lifetime</div>
+      <div style="position:absolute;left:150px;top:12px;width:1px;height:70px;background:#2c3340"></div>
+      <div class="hero" style="position:absolute;left:166px;top:12px;font-size:48px;color:var(--acc)">3</div>
+      <div class="lbl" style="position:absolute;left:168px;top:66px;font-size:12px">Today</div>
+    </div>
+    <div class="cap"><b>Small, idle</b> (≈ one third width × one quarter height).</div>
+  </div>
+  <div>
+    <div class="w night" style="width:256px;height:95px">
+      <div class="hero" style="position:absolute;left:12px;top:12px;font-size:48px">412</div>
+      <div class="lbl" style="position:absolute;left:14px;top:66px;font-size:12px">Lifetime</div>
+      <div style="position:absolute;left:150px;top:12px;width:1px;height:70px;background:#2c3340"></div>
+      <div class="hero" style="position:absolute;left:166px;top:12px;font-size:48px;color:var(--acc)">3</div>
+      <div class="lbl" style="position:absolute;left:168px;top:66px;font-size:12px">Today</div>
+      <div style="position:absolute;left:0;bottom:0;height:6px;width:40%;background:var(--warn)"></div>
+    </div>
+    <div class="cap"><b>Small, counting.</b> Bottom bar fills over the delay.</div>
+  </div>
+  <div>
+    <div class="w day" style="width:256px;height:95px">
+      <div class="hero" style="position:absolute;left:12px;top:12px;font-size:48px">412</div>
+      <div class="lbl" style="position:absolute;left:14px;top:66px;font-size:12px">Lifetime</div>
+      <div style="position:absolute;left:150px;top:12px;width:1px;height:70px;background:#e3e7ee"></div>
+      <div class="hero" style="position:absolute;left:166px;top:12px;font-size:48px;color:var(--acc)">3</div>
+      <div class="lbl" style="position:absolute;left:168px;top:66px;font-size:12px">Today</div>
+    </div>
+    <div class="cap"><b>Small, day theme.</b></div>
+  </div>
+  <div>
+    <div class="w night" style="width:190px;height:56px">
+      <div class="hero" style="position:absolute;left:10px;top:10px;font-size:34px">412</div>
+      <div class="sub" style="position:absolute;left:104px;top:8px;font-size:12px">TODAY</div>
+      <div class="hero" style="position:absolute;left:104px;top:22px;font-size:26px;color:var(--acc)">3</div>
+    </div>
+    <div class="cap"><b>Tiny</b> (a top-bar sized cell).</div>
+  </div>
+</div>
+
+<!-- ============================================================ SETTINGS -->
+<h2>4. Settings (long-press the widget → Configure)</h2>
+<p class="lead">Same four counting settings as today. "Reset all data on reboot" is replaced by direct, confirmed actions.</p>
+<div class="row">
+  <div>
+    <div class="form">
+      <div class="hdr">Flight Counter</div>
+      <div class="sec">Counting</div>
+      <div class="ln"><span>Trigger switch</span><span class="val">SF↓</span></div>
+      <div class="ln"><span>Trigger delay</span><span class="val">5 s</span></div>
+      <div class="ln"><span>One count per power cycle</span><span class="val">On</span></div>
+      <div class="ln"><span>Flights before Flight Counter</span><span class="val">23</span></div>
+      <div class="sec">Display</div>
+      <div class="ln"><span>Border</span><span class="val">Off</span></div>
+      <div class="sec">This model <span style="text-transform:none;letter-spacing:0">(Extra 330SC · 412 flights)</span></div>
+      <div class="ln"><span>Undo last flight<span class="new">NEW</span></span><span class="btn">Undo…</span></div>
+      <div class="ln"><span>Erase this model's flights<span class="new">NEW</span></span><span class="btn">Erase…</span></div>
+    </div>
+    <div class="cap" style="max-width:784px"><b>"Flights before Flight Counter"</b> is v1's "Starting Lifetime Count", renamed so it's clear what it's for. Changing it later just adds a new line (the latest value wins), so it shifts Lifetime and nothing else. A v1 upgrade fills it in for you. <b>Undo</b> removes an accidental count (asks first, shows which flight). <b>Erase</b> asks twice. Neither deletes lines from the log: they add a correction line, so even these can be reversed by hand if needed.</div>
+  </div>
+</div>
+
+<!-- ============================================================ DATA -->
+<h2>5. How the data is kept</h2>
+<p class="lead">One line per flight, appended to <code>Files/flights.csv</code>. Totals, today, month and year are added up from the lines once at power-up, then kept in memory. Appending never rewrites what's already there, so a glitch can at worst lose the one line being written, never the history.</p>
+<pre>time,date,model,n,kind
+1758901234,2026-09-26,M3,1,flight        one flight
+1758904100,2026-09-26,M3,-1,undo         undo of an accidental count
+1758000000,2026-09-15,M3,150,before      "Flights before Flight Counter" (latest line wins)</pre>
+<p class="note"><code>Files/models.csv</code> maps a model key (M3) to the model's own file on the radio (<code>model.path()</code>, e.g. <code>models/extra330.bin</code>) and its current name. Rename the model: same file, same counts, the name just updates. Clone it: the clone is a new file, so it starts fresh, whether or not it copied the receiver ID. Size: about 40 bytes a flight, so 10 flights a weekend for 10 years is roughly 200 KB — adding it up at power-up takes a moment, not seconds. Your old v1 files are read once and left exactly where they are, as a backup.</p>
+
+<!-- ============================================================ EDGE CASES -->
+<h2>6. Edge cases — decided in this draft</h2>
+<table class="q">
+  <tr><th>Case</th><th>What 2.0 does</th></tr>
+  <tr><td>Storage glitch at boot</td><td>Shows "– –" and retries every second. Never shows or saves 0 over real data. (This is the likely cause of the field report: in v1 one failed read at power-up turned 250 flights into 1.)</td></tr>
+  <tr><td>Model renamed</td><td>Counts follow the model's file, not its name or receiver ID. Name on screen updates. <i>(Being verified: that Ethos keeps the file name when you rename a model, on 1.6 and 26.)</i></td></tr>
+  <tr><td>Model cloned for a new airplane</td><td>DECIDED (you clone all the time). New file → the clone starts at 0, even on 1.6 where the clone copies the receiver ID.</td></tr>
+  <tr><td>Receiver re-bound</td><td>No effect on counts (same file).</td></tr>
+  <tr><td>Model file moved or restored from backup</td><td>If the file path is new but the name matches a model whose old file is gone, the counts move to the new path. Otherwise it counts as a new model.</td></tr>
+  <tr><td>Two Flight Counter widgets on one model</td><td>(e.g. a small tile on page 1, the chart on page 2.) Both show the same numbers. Set the trigger on one of them; if more than one has a trigger set and they fire together, the flight is still logged once, not once per widget.</td></tr>
+  <tr><td>Model switched without power cycle</td><td>Re-checks the model every wakeup and swaps to that model's counts.</td></tr>
+  <tr><td>"Today" / month / year</td><td>Calendar day/month/year on the radio clock. If the radio clock is wrong, dates are wrong too (the count itself is fine).</td></tr>
+  <tr><td>Power off during the delay</td><td>Nothing logged (same as v1).</td></tr>
+  <tr><td>Trigger held on at power-up</td><td>DECIDED: does not count until the switch has been seen OFF once. (v1 counted immediately.)</td></tr>
+  <tr><td>Upgrade from v1</td><td>One-time import per model: v1 lifetime minus today, plus v1's starting count, becomes <b>Flights before Flight Counter</b>; v1's today becomes dated flights today. v1 files untouched. Never imports twice: a v1 name is claimed by the first model that boots with it, so a clone made later with the same name does not pick up the original's v1 counts.</td></tr>
+  <tr><td>Reinstall over an existing install</td><td>Goal: the release ZIP ships no <code>Files/</code> folder, so an installer has nothing to replace it with, and the widget creates the folder itself. Ethos documents <code>os.mkdir()</code>; I'll confirm it works on 1.6 and 26 before relying on it. Either way, your flights are in the append-only log.</td></tr>
+  <tr><td>Ethos 1.6 and 26</td><td>Must run on both (you're staying on 1.6.x). Tested in the 1.6.7 and 26.1.2 X20RS simulators before release.</td></tr>
+</table>
+
+<h2>7. Questions for you</h2>
+<p class="note">Answered: you clone models all the time (→ counts follow the model file, a clone starts fresh), and a switch that is already on at power-up does not count.</p>
+<div class="ask"><b>Still open — the look.</b> Anything you'd change on the large, medium or small layouts before I build? (Mark up this page any way you like.)</div>
+</main>
