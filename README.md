@@ -149,26 +149,31 @@ flights: Today starts at 0 and the chart starts on the day you install.
 
 ## Installation
 
-### Install with Ethos Suite
+### Install with FrSky Suite
 
 1. Download `FlightCount2-v2.0.0.zip` from the
-   [Releases page](https://github.com/gjawhar/FlightCount/releases).
-2. In Ethos Suite, open the **Lua Library** tab, choose **Install lua
-   script**, and select the ZIP.
-3. On the radio, add **Flight Counter 2** to a model screen and set the
+   [Releases page](https://github.com/gjawhar/FlightCount/releases). It
+   carries the `ethos_lua_manifest.json` that FrSky Suite's Lua installer
+   requires.
+2. In FrSky Suite, connect the radio, open the Lua page, choose **Install
+   Lua scripts** and select the ZIP.
+3. Reboot the radio, add **Flight Counter 2** to a model screen and set the
    trigger switch.
 
 ZIP structure:
 
 ```
-scripts/
-└── FlightCount2/
-    ├── main.lua
-    ├── core.lua
-    ├── draw.lua
-    ├── screen.lua
-    └── config.lua
+ethos_lua_manifest.json
+FlightCount2/
+├── main.lua
+├── core.lua
+├── draw.lua
+├── screen.lua
+└── config.lua
 ```
+
+Build it with `python3 tools/make_zip.py`, which also checks the result
+against FrSky Suite's rules.
 
 ### Install by copying files
 
