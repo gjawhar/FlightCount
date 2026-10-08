@@ -10,8 +10,8 @@ own line, so the widget can show today, this month, this year, a 12-month
 history chart and a lifetime total. Counts follow a model through a rename,
 and a storage glitch can no longer zero your counts.
 
-**Pre-release.** Tested in the FrSky Suite X20RS simulator on Ethos 1.6.7 and
-26.1.2; not yet flown on a real radio. Please report anything odd (see
+Field-tested on an X20RS running Ethos 1.6, and in the FrSky Suite X20RS
+simulator on Ethos 1.6.7 and 26.1.2. Please report anything odd (see
 [Feedback](#feedback)).
 
 ## Screenshots
@@ -187,8 +187,9 @@ whichever your radio uses.
 
 ## Requirements
 
-- FrSky Ethos 1.6 or 26. Tested on the X20RS simulator; other color-screen
-  radios should work, but slot layouts were measured on the X20RS.
+- FrSky Ethos 1.6 or 26. Tested on an X20RS (Ethos 1.6) and the X20RS
+  simulator (1.6.7 and 26.1.2); other color-screen radios should work, but
+  slot layouts were measured on the X20RS.
 
 ## Feedback
 
