@@ -102,6 +102,7 @@ form = {
     return field("choice", table.concat(names, " | ") .. " = " .. tostring(get()))
   end,
   addStaticText = function(_, _, t) return field("text", t) end,
+  addTextButton = function(_, _, t, fn) assert(type(t) == "string" and type(fn) == "function", "addTextButton args") return field("textbutton", t) end,
 }
 local REG
 system = { registerWidget = function(t) REG = t end, getVersion = function() return { board = "X20RS" } end }

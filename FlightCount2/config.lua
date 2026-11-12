@@ -65,8 +65,11 @@ function config.build(widget)
     ln = line("Undo and Erase happen when you leave Settings")
   end
 
+  -- A text button, not static text: static text cannot take focus and an
+  -- Ethos form only scrolls to follow focus, so on a short screen (Twin X
+  -- Lite) this last row could not be reached (pilot, 2026-11-11).
   ln = line("Version")
-  form.addStaticText(ln, nil, "Flight Counter " .. core.VERSION)
+  form.addTextButton(ln, nil, "Flight Counter " .. core.VERSION, function() return true end)
 end
 
 -- Called from write(): applies what was picked on the page, then clears it.

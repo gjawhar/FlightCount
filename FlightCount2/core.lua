@@ -15,7 +15,7 @@
 
 local core = {}
 
-core.VERSION = "2.0.0"
+core.VERSION = "2.0.1"
 
 local DEDUPE_SEC   = 5     -- two widgets firing for the same activation
 local RETRY_SEC    = 1
